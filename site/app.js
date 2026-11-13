@@ -31,6 +31,7 @@ const guides = [
     title: "GH-200: GitHub Actions",
     files: [
       ["Overview", "gh-200/README.md"],
+      ["Practice Quiz", "gh-200/quiz"],
       ["Workflow Authoring", "gh-200/01-workflow-authoring.md"],
       ["Trigger Events and Syntax", "gh-200/02-trigger-events-and-syntax.md"],
       ["Reusable Workflows", "gh-200/03-reusable-workflows.md"],
@@ -49,6 +50,8 @@ const breadcrumb = document.querySelector("#breadcrumb");
 const sourceLink = document.querySelector("#source-link");
 const search = document.querySelector("#search");
 const menuToggle = document.querySelector("#menu-toggle");
+let pageRequest = 0;
+let disposeQuiz = null;
 
 const allFiles = guides.flatMap((guide) =>
   guide.files.map(([label, path]) => ({ guide: guide.title, label, path }))
@@ -89,15 +92,20 @@ function rewriteMarkdownLinks(container, currentPath) {
     }
 
     const [rawPath, hash = ""] = href.split("#");
-    const normalized = new URL(rawPath, `${window.location.origin}/${currentFolder}/`).pathname.slice(1);
+    const siteBase = new URL(".", window.location.href);
+    const resolved = new URL(rawPath, new URL(`${currentFolder}/`, siteBase));
+    const normalized = resolved.pathname.slice(siteBase.pathname.length);
 
-    if (normalized.endsWith(".md")) {
+    if (normalized.endsWith(".md") || normalized === "gh-200/quiz") {
       anchor.href = `#/${normalized}${hash ? `#${hash}` : ""}`;
     }
   });
 }
 
 async function loadPage(path) {
+  const request = ++pageRequest;
+  disposeQuiz?.();
+  disposeQuiz = null;
   const file = findFile(path);
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.classList.toggle("active", link.dataset.path === file.path);
@@ -107,6 +115,14 @@ async function loadPage(path) {
   sourceLink.href = file.path;
   sourceLink.textContent = "Open Markdown";
 
+  if (file.path === "gh-200/quiz") {
+    sourceLink.href = "site/gh-200-questions.js";
+    sourceLink.textContent = "Question bank";
+    document.title = "GH-200 Practice Quiz | Cert Study";
+    disposeQuiz = QuizUI.mount(content);
+    return;
+  }
+
   try {
     const response = await fetch(file.path, { cache: "no-store" });
     if (!response.ok) {
@@ -114,12 +130,18 @@ async function loadPage(path) {
     }
 
     const markdown = await response.text();
+    if (request !== pageRequest) {
+      return;
+    }
     const html = marked.parse(markdown);
     content.innerHTML = DOMPurify.sanitize(html);
     rewriteMarkdownLinks(content, file.path);
     document.title = `${file.label} | Cert Study`;
     window.scrollTo({ top: 0, behavior: "instant" });
   } catch (error) {
+    if (request !== pageRequest) {
+      return;
+    }
     content.innerHTML = `
       <h1>Unable to load page</h1>
       <p>The file <code>${file.path}</code> could not be loaded. Serve the repository over HTTP, for example with <code>python -m http.server 8000</code>.</p>

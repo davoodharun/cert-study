@@ -20,6 +20,21 @@ Because you asked for extra depth, spend the most time on **workflow syntax, tri
 **Official practice/cert page:** [GitHub Actions certification](https://learn.microsoft.com/en-us/credentials/certifications/github-actions/)  
 **Exam env:** [exam sandbox](https://aka.ms/GHExamDemo-enu)
 
+### Practice quiz
+
+Open the [GH-200 Practice Quiz](./quiz) in the documentation site for 100
+original randomized questions across all five domains. Use study mode for
+explanations of every correct answer and distractor, or untimed exam practice
+for feedback only after submission. Filter by domain, review missed answers,
+and track your last ten attempts locally in your browser.
+
+The quiz is part of the site rather than a Markdown file. Start the site using
+the instructions in [Documentation site](https://github.com/davoodharun/cert-study/blob/main/DOCS-SITE.md), or use
+[the GitHub Pages quiz](https://davoodharun.github.io/cert-study/#/gh-200/quiz)
+after deployment. Questions are independent practice material, not official
+exam questions. A raw quiz percentage does not translate to the exam's scaled
+passing score or guarantee a pass.
+
 ### Files in this folder
 
 | File | Contents |
