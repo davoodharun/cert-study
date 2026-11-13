@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Certification Study Guides</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="site/styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <aside class="sidebar" aria-label="Study guide navigation">
+        <div class="brand">
+          <span class="brand-mark">CS</span>
+          <div>
+            <p class="eyebrow">Documentation</p>
+            <h1>Cert Study</h1>
+          </div>
+        </div>
+        <label class="search-label" for="search">Search guides</label>
+        <input id="search" class="search-input" type="search" placeholder="workflow_call, VNet, PR..." autocomplete="off" />
+        <nav id="nav" class="nav-list" aria-label="Guides"></nav>
+      </aside>
+
+      <main class="content-shell">
+        <div class="topbar">
+          <button id="menu-toggle" class="icon-button" type="button" aria-label="Toggle navigation">☰</button>
+          <div id="breadcrumb" class="breadcrumb">Certification Study Guides</div>
+          <a id="source-link" class="source-link" href="az-900/README.md">Open Markdown</a>
+        </div>
+
+        <article id="content" class="markdown-body" aria-live="polite">
+          <h1>Certification Study Guides</h1>
+          <p>Select a guide from the navigation to start studying.</p>
+        </article>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="site/app.js"></script>
+  </body>
+</html>
